@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {
+  //@ts-ignore
   decrement,
+  //@ts-ignore
   increment,
+  //@ts-ignore
   incrementByAmount,
+  //@ts-ignore
   incrementAsync,
+  //@ts-ignore
   incrementIfOdd,
+  //@ts-ignore
   selectCount,
 } from './counterSlice';
 import styles from './Counter.module.css';
@@ -28,6 +34,7 @@ export function Counter() {
         >
           -
         </button>
+        {/*@ts-ignore*/}
         <span className={styles.value}>{count}</span>
         <button
           className={styles.button}

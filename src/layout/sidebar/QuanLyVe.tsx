@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../firebase/firebase';
 
 import '../../styles/quanlyve.css';
 import "antd/dist/antd.css";
@@ -8,6 +9,12 @@ import { Tabs, Modal, Button, DatePicker, Space, Radio, Checkbox, Row, Col, Tabl
 import { SearchOutlined } from "@ant-design/icons";
 import { BsDot } from "react-icons/bs";
 import { AiOutlineFilter } from "react-icons/ai";
+import { iteratorSymbol } from 'immer/dist/internal';
+import { HiTicket } from 'react-icons/hi';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import ticketSlice, { getTicket, ticketAsync } from '../../features/counter/counterSlice';
+import { type } from 'os';
 
 
 // Date picker
@@ -133,13 +140,11 @@ const Modals = () => {
 const columns = [
   {
     title: 'STT',
-    dataIndex: 'stt',
-    key: 'stt',
+    render: (text:any, record:any, index:any) => `${index + 1}`
   },
-
   {
     title: 'Booking code',
-    dataIndex: 'bookcode',
+    dataIndex: 'bookingcode',
     key: 'bookcode',
   },
 
@@ -195,19 +200,7 @@ const columns = [
 
 const data = [
   {
-    key: '1',
-    stt: '1',
-    bookcode: 'ALT20210501',
-    sove: 123456789034,
-    sukien: 'Hội chợ triển lãm tiêu dùng 2021',
-    tags: ['Đã sử dụng'],
-    useddate: '14/04/2021',
-    releasedate: '14/04/2021',
-    gatecheck: 'Cổng 1',
-  },
-  {
-    key: '2',
-    stt: '2',
+    stt:'1', 
     bookcode: 'ALT20210501',
     sove: 123456789034,
     sukien: 'Hội chợ triển lãm tiêu dùng 2021',
@@ -245,7 +238,7 @@ const Tab = () => (
 
     </TabPane>
 
-    <TabPane tab="Gói sự kiện" key="2">
+    <TabPane tab="Gói sự kiện" key="2"> {/* Gói sự kiện */}
       <div className='khungtren'> {/* Khung Trên Gói Sự kiện */}
         <input type='text' className='searcher' /><SearchOutlined className='icongoigiadinh' />
       </div>
@@ -266,10 +259,38 @@ const Tab = () => (
 // Render ra kết quả
 
 export const QuanLyVe = () => {
+
+  const dispatch = useDispatch()
+
+  const ticketArray = useSelector((state: RootState ) => state.ticket )
+
+  // const [ticket, setTicket] = useState([] as any);
+  useEffect(
+    () => {
+        dispatch(getTicket())
+    }
+  ,[dispatch])
+
+  console.log(ticketArray)
+  
+
   return (
     <div className="quanlyve">
+
+   {
+         //@ts-ignore
+        ticketArray.ketqua?.map(
+          //@ts-ignore
+          (takeTicketData) =>(
+            //@ts-ignore
+             <h4 key={takeTicketData.id}>{takeTicketData.bookingcode}</h4> 
+           ) 
+          )
+      } 
+
       <div className='tieudedanhsachve'>Danh Sách Vé</div>
       <div className='tabs'><Tab /></div>
+
     </div>
   )
 }
