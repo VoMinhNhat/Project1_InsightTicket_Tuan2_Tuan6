@@ -1,10 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer, { ticketSlice } from '../features/counter/counterSlice';
+import {comboTicketSlice} from '../features/counter/comboTicketFireStore';
+import counterReducer, { ticketSlice } from '../features/counter/ticketFireStore';
 
 export const store = configureStore({
   reducer: {
     ticket: ticketSlice.reducer,
-    
+    comboticket: comboTicketSlice.reducer,
   },
 });
 

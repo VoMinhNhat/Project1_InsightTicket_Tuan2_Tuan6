@@ -4,7 +4,7 @@ import counterReducer, {
   increment, //@ts-ignore
   decrement, //@ts-ignore
   incrementByAmount,
-} from './counterSlice';
+} from './ticketFireStore';
 
 describe('counter reducer', () => {
   const initialState: CounterState = { //@ts-ignore

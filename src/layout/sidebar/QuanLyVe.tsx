@@ -4,17 +4,15 @@ import api from '../../firebase/firebase';
 import '../../styles/quanlyve.css';
 import "antd/dist/antd.css";
 
-import moment from 'moment';
 import { Tabs, Modal, Button, DatePicker, Space, Radio, Checkbox, Row, Col, Table, Tag, } from 'antd';
 import { SearchOutlined } from "@ant-design/icons";
 import { BsDot } from "react-icons/bs";
 import { AiOutlineFilter } from "react-icons/ai";
-import { iteratorSymbol } from 'immer/dist/internal';
-import { HiTicket } from 'react-icons/hi';
+import { BiDotsVerticalRounded } from "react-icons/bi";
+
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import ticketSlice, { getTicket, ticketAsync } from '../../features/counter/counterSlice';
-import { type } from 'os';
+import ticketSlice, { getTicket, ticketAsync } from '../../features/counter/ticketFireStore';
 
 
 // Date picker
@@ -136,80 +134,60 @@ const Modals = () => {
   );
 };
 
-// Table Danh sách vé:
-const columns = [
-  {
-    title: 'STT',
-    render: (text:any, record:any, index:any) => `${index + 1}`
-  },
-  {
-    title: 'Booking code',
-    dataIndex: 'bookingcode',
-    key: 'bookcode',
-  },
 
-  {
-    title: 'Số vé',
-    dataIndex: 'sove',
-    key: 'sove',
-  },
+// Modal để đổi ngày sử dụng vé
+const ModalNewDay = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  {
-    title: 'Tên sự kiện',
-    dataIndex: 'sukien',
-    key: 'sukien',
-  },
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
 
-  {
-    title: 'Tình trạng sử dụng',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (tags: any) => (
-      <>
-        {tags.map((tag: any) => {
-          let color = tag === 'Đã sử dụng' ? 'geekblue' : 'green';
-          if (tag === 'Hết hạn') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              <BsDot /> {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
 
-  {
-    title: 'Ngày sử dụng',
-    dataIndex: 'useddate',
-    key: 'useddate',
-  },
-  {
-    title: 'Ngày xuất vé',
-    dataIndex: 'releasedate',
-    key: 'releasedate',
-  },
-  {
-    title: 'Cổng check-in',
-    dataIndex: 'gatecheck',
-    key: 'gatecheck',
-  },
-];
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
-const data = [
-  {
-    stt:'1', 
-    bookcode: 'ALT20210501',
-    sove: 123456789034,
-    sukien: 'Hội chợ triển lãm tiêu dùng 2021',
-    tags: ['Đã sử dụng'],
-    useddate: '14/04/2021',
-    releasedate: '14/04/2021',
-    gatecheck: 'Cổng 1',
-  },
-];
+  return (
+    <>
+      <Button type="primary" onClick={showModal} className='btncapnhatngaysudung'>
+        <BiDotsVerticalRounded/>
+      </Button>
+      <Modal title="Đổi ngày sử dụng vé" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={null} width={550}>
+
+        <div style={{display: 'flex'}}>
+          <div style={{fontSize:'15px', fontWeight: '500'}}>Số vé</div>
+          <div style={{fontSize:'14px', fontWeight: '400', marginLeft:'100px'}}>PKG20210502</div>
+        </div>
+
+        <div style={{display: 'flex', marginTop: '12px'}}>
+          <div style={{fontSize:'15px', fontWeight: '500'}}>Loại vé</div>
+          <div style={{fontSize:'14px', fontWeight: '400', marginLeft:'90px'}}>Vé cổng-Gói sự kiện</div>
+        </div> 
+
+        <div style={{display: 'flex', marginTop: '12px'}}>
+          <div style={{fontSize:'15px', fontWeight: '500'}}>Tên sự kiện</div>
+          <div style={{fontSize:'14px', fontWeight: '400', marginLeft:'63px'}}>Hội chợ triễn lãm tiêu dùng 2021</div>
+        </div>
+
+        <div style={{display: 'flex', marginTop: '12px'}}>
+          <div style={{fontSize:'15px', fontWeight: '500'}}>Hạn sử dụng</div>
+          <Space direction="vertical" size={12} style={{marginLeft: '50px'}}>
+              <DatePicker format={dateFormat} />
+            </Space>,
+        </div>
+
+        <div style={{textAlign: 'center', marginTop: '20px'}}> {/* Lưu hoặc hủy */}
+          <button className='btnhuycaidatve'>Hủy</button>
+          <button className='btnluucaidatve'>Lưu</button>
+        </div>
+      </Modal>
+    </>
+  );
+};
 
 
 // Tabs cho gói gia đình và sự kiện:
@@ -219,10 +197,111 @@ function callback(key: any) {
   console.log(key);
 }
 
-const Tab = () => (
+
+const Tab = () => {
+
+  // Kết nối với data của table
+  const dispatch = useDispatch()
+
+  const ticketArray = useSelector((state: RootState ) => state.ticket )
+  
+  useEffect(
+    () => {
+        dispatch(getTicket())
+    }
+  ,[dispatch])
+
+  console.log(ticketArray)
+
+
+// Colums của table   
+  const columns = [
+    {
+      title: 'STT',
+      render: (text:any, record:any, index:any) => `${index + 1}`
+    },
+    {
+      title: 'Booking code',
+      dataIndex: 'bookingcode',
+      key: 'bookcode',
+    },
+  
+    {
+      title: 'Số vé',
+      dataIndex: 'ticketnumber',
+      key: 'sove',
+    },
+  
+    {
+      title: 'Tên sự kiện',
+      dataIndex: 'eventname',
+      key: 'sukien',
+    },
+  
+    {
+      title: 'Tình trạng sử dụng',
+      key: 'tags',
+      dataIndex: 'status',
+      render: (tags: any) => {
+        if (tags === 'Hết hạn') {
+        return(
+          <h4 style={{color: '#FD5959', width: '80px', background: '#F8EBE8',paddingLeft: '5px', height: '21px', border: '1px solid #FD5959', borderRadius: '4px'}}>
+            <BsDot/>{tags}
+          </h4>
+        )
+      }
+      else if (tags === 'Đã sử dụng'){
+        return(
+          <h4 style={{color: '#919DBA',width: '100px', background: '#EAF1F8', paddingLeft: '5px', height: '21px', border: '1px solid #919DBA', borderRadius: '4px'}}>
+            <BsDot/>{tags}
+          </h4>
+        )
+      } else {
+        return(
+          <h4 style={{color: '#03AC00',width: '110px', background: '#DEF7E0', paddingLeft: '5px', height: '21px', border: '1px solid #03AC00', borderRadius: '4px'}}>
+            <BsDot/>{tags}
+          </h4>
+        )
+      }
+      },
+    },
+    {
+      title: 'Ngày sử dụng',
+      dataIndex: 'useddate',
+      key: 'useddate',
+      render: (useddate:any, record:any) => {
+        if(record.status === 'Đã sử dụng'){
+          return( <> {useddate} </> )
+        }
+      }
+    },
+    {
+      title: 'Ngày xuất vé',
+      dataIndex: 'releasedate',
+      key: 'releasedate',
+    },
+    {
+      title: 'Cổng check-in',
+      dataIndex: 'gate',
+      key: 'gatecheck',
+      render: (gatecheck:any, record:any) => {
+        if(record.status === 'Đã sử dụng'){ return( <>{gatecheck}</> )} else { return(<>-</>) }
+      }
+    },
+    {
+      title: '',
+      key: 'action',
+      render: (text:any, record:any) => {
+        if(record.status === 'Chưa sử dụng'){ return( <ModalNewDay/> )} 
+      }
+    },
+  ];
+
+ return (
+
   <Tabs defaultActiveKey="1" onChange={callback}>
 
-    <TabPane tab="Gói Gia Đình" key="1"> {/* Gói gia đìn */}
+    <TabPane tab="Gói Gia Đình" key="1"> {/* Gói gia đình*/}
 
       <div className='khungtren'> {/* Khung Trên Gói Gia Đình */}
         <input type='text' className='searcher' /><SearchOutlined className='icongoigiadinh' />
@@ -234,8 +313,7 @@ const Tab = () => (
 
       <Button className='xuatfilebutton'>Xuất file (.csv)</Button> {/* Xuất file gói gia đình  */}
 
-      <Table columns={columns} dataSource={data} className='tabledanhsachve' />
-
+      <Table columns={columns} dataSource={ticketArray?.value?.map((ticket: any) => ({...ticket, key: ticket.id}))} className='tabledanhsachve' />
     </TabPane>
 
     <TabPane tab="Gói sự kiện" key="2"> {/* Gói sự kiện */}
@@ -249,35 +327,22 @@ const Tab = () => (
 
       <Button className='xuatfilebutton'>Xuất file (.csv)</Button> {/* Xuất file gói sự kiện  */}
 
-      <Table columns={columns} dataSource={data} className='tabledanhsachve' />
+      <Table columns={columns} dataSource={ticketArray?.value?.map((ticket: any) => ({...ticket, key: ticket.id}))} className='tabledanhsachve' />
     </TabPane>
 
   </Tabs>
-);
+ )
+ };
 
 
 // Render ra kết quả
 
 export const QuanLyVe = () => {
 
-  const dispatch = useDispatch()
-
-  const ticketArray = useSelector((state: RootState ) => state.ticket )
-
-  // const [ticket, setTicket] = useState([] as any);
-  useEffect(
-    () => {
-        dispatch(getTicket())
-    }
-  ,[dispatch])
-
-  console.log(ticketArray)
-  
-
   return (
     <div className="quanlyve">
 
-   {
+      {/* {
          //@ts-ignore
         ticketArray.ketqua?.map(
           //@ts-ignore
@@ -286,7 +351,7 @@ export const QuanLyVe = () => {
              <h4 key={takeTicketData.id}>{takeTicketData.bookingcode}</h4> 
            ) 
           )
-      } 
+      }  */}
 
       <div className='tieudedanhsachve'>Danh Sách Vé</div>
       <div className='tabs'><Tab /></div>

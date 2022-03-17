@@ -14,7 +14,7 @@ import {
   incrementIfOdd,
   //@ts-ignore
   selectCount,
-} from './counterSlice';
+} from './ticketFireStore';
 import styles from './Counter.module.css';
 
 export function Counter() {

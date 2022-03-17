@@ -10,6 +10,10 @@ import {
 } from 'antd';
 import moment from 'moment';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import comboTicketSlice, {getComboTicket,comboTicketAsync} from '../../features/counter/comboTicketFireStore';
+
 
 // Datepicker:
 const { RangePicker } = DatePicker;
@@ -32,87 +36,87 @@ function handleTinhTrangVe(value: any) {
 }
 
 // Table cho việc cài đặt danh sách vé
-const columns = [
-  {
-    title: 'STT',
-    dataIndex: 'stt',
-    key: 'stt',
-  },
+// const columns = [
+//   {
+//     title: 'STT',
+//     dataIndex: 'stt',
+//     key: 'stt',
+//   },
 
-  {
-    title: 'Mã Gói',
-    dataIndex: 'bookcode',
-    key: 'bookcode',
-  },
+//   {
+//     title: 'Mã Gói',
+//     dataIndex: 'bookcode',
+//     key: 'bookcode',
+//   },
 
-  {
-    title: 'Tên gói vé',
-    dataIndex: 'goivename',
-    key: 'goivename',
-  },
-  {
-    title: 'Ngày áp dụng',
-    dataIndex: 'startdate',
-    key: 'startdate',
-  },
-  {
-    title: 'Ngày hết hạn',
-    dataIndex: 'outdate',
-    key: 'outdate',
-  },
-  {
-    title: 'Giá vé (VNĐ/Vé)',
-    dataIndex: 'price',
-    key: 'price',
-  },
-  {
-    title: 'Giá combo (VNĐ/Combo)',
-    dataIndex: 'comboprice',
-    key: 'comboprice',
-  },
-  {
-    title: 'Tình trạng',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (tags: any) => (
-      <>
-        {tags.map((tag: any) => {
-          let color = tag === 'Đang Áp Dụng' ? 'green' : 'green';
-          if (tag === 'Tắt') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              <BsDot/>{tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: 'Cập Nhật',
-    key: 'action',
-    render: (text: any, record: any) => (
-         <ModalCapNhatVe />
-    ),
-  },
-];
+//   {
+//     title: 'Tên gói vé',
+//     dataIndex: 'goivename',
+//     key: 'goivename',
+//   },
+//   {
+//     title: 'Ngày áp dụng',
+//     dataIndex: 'startdate',
+//     key: 'startdate',
+//   },
+//   {
+//     title: 'Ngày hết hạn',
+//     dataIndex: 'outdate',
+//     key: 'outdate',
+//   },
+//   {
+//     title: 'Giá vé (VNĐ/Vé)',
+//     dataIndex: 'price',
+//     key: 'price',
+//   },
+//   {
+//     title: 'Giá combo (VNĐ/Combo)',
+//     dataIndex: 'comboprice',
+//     key: 'comboprice',
+//   },
+//   {
+//     title: 'Tình trạng',
+//     key: 'tags',
+//     dataIndex: 'tags',
+//     render: (tags: any) => (
+//       <>
+//         {tags.map((tag: any) => {
+//           let color = tag === 'Đang Áp Dụng' ? 'green' : 'green';
+//           if (tag === 'Tắt') {
+//             color = 'volcano';
+//           }
+//           return (
+//             <Tag color={color} key={tag}>
+//               <BsDot/>{tag.toUpperCase()}
+//             </Tag>
+//           );
+//         })}
+//       </>
+//     ),
+//   },
+//   {
+//     title: 'Cập Nhật',
+//     key: 'action',
+//     render: (text: any, record: any) => (
+//          <ModalCapNhatVe />
+//     ),
+//   },
+// ];
 
-const data = [
-  {
-    key: '1',
-    stt: '1',
-    bookcode: 'ALT20210501',
-    goivename: 'Gói Gia Đình',
-    startdate: '14/04/2021',
-    outdate: '14/04/2021',
-    price: '90.000 VNĐ',
-    comboprice: '360.000 VNĐ/4 vé',
-    tags: ['Đang áp dụng'],
-  },
+// const data = [
+//   {
+//     key: '1',
+//     stt: '1',
+//     bookcode: 'ALT20210501',
+//     goivename: 'Gói Gia Đình',
+//     startdate: '14/04/2021',
+//     outdate: '14/04/2021',
+//     price: '90.000 VNĐ',
+//     comboprice: '360.000 VNĐ/4 vé',
+//     tags: ['Đang áp dụng'],
+//   },
 
-];
+// ];
 
 
 // Modal cho việc thêm gói vé
@@ -172,7 +176,7 @@ const ModalThemGoiVe = () => {
           <h4>Tình trạng</h4>
           <Select defaultValue="Yes" style={{ width: 150}} onChange={handleTinhTrangVe} className='selectchocaidatve'> 
             <Option value="Yes">Đang áp dụng</Option>
-            <Option value="No">Chưa rõ</Option>
+            <Option value="No">Tắt</Option>
           </Select>
         </div>
 
@@ -275,6 +279,87 @@ const ModalCapNhatVe = () => {
 // Render ra
 
 export const CaiDatVe = () => {
+
+  const dispatch = useDispatch()
+
+  const comboTicketArray = useSelector((state: RootState ) => state.comboticket )
+  
+  useEffect(
+    () => {
+        dispatch(getComboTicket())
+    }
+  ,[dispatch])
+
+  console.log(comboTicketArray)
+
+  const columns = [
+    {
+      title: 'STT',
+      dataIndex: 'stt',
+      key: 'stt',
+    },
+  
+    {
+      title: 'Mã Gói',
+      dataIndex: 'magoi',
+      key: 'bookcode',
+    },
+  
+    {
+      title: 'Tên gói vé',
+      dataIndex: 'tengoive',
+      key: 'goivename',
+    },
+    {
+      title: 'Ngày áp dụng',
+      dataIndex: 'begindate',
+      key: 'startdate',
+    },
+    {
+      title: 'Ngày hết hạn',
+      dataIndex: 'enddate',
+      key: 'outdate',
+    },
+    {
+      title: 'Giá vé (VNĐ/Vé)',
+      dataIndex: 'ticketprice',
+      key: 'price',
+    },
+    {
+      title: 'Giá combo (VNĐ/Combo)',
+      dataIndex: 'comboticketprice',
+      key: 'comboprice',
+    },
+    {
+      title: 'Tình trạng',
+      key: 'tags',
+      dataIndex: 'status',
+      render: (tags: any) => {
+        if(tags==='Đang áp dụng'){
+          return(
+          <div style={{color: '#03AC00', width: '120px', height: '25px', paddingLeft:'5px', alignItems: 'center', display: 'flex', background: '#DEF7E0', fontSize: '14px', border: '1px solid #03AC00', borderRadius:'5px'}}>
+            <BsDot/>{tags}
+          </div>
+          )
+        } else {
+          return(
+            <div style={{color: '#FD5959', width: '70px', height: '25px', paddingLeft:'5px', alignItems: 'center', display: 'flex', background: '#F8EBE8', fontSize: '14px', border: '1px solid #FD5959', borderRadius:'5px'}}>
+              <BsDot/>{tags}
+            </div>
+            )
+        }
+      }
+    },
+    {
+      title: 'Cập Nhật',
+      key: 'action',
+      render: (text: any, record: any) => (
+           <ModalCapNhatVe />
+      ),
+    },
+  ];
+
+
   return (
     <div className="caidatve">
 
@@ -288,7 +373,8 @@ export const CaiDatVe = () => {
         <ModalThemGoiVe />
       </div>
 
-      <Table columns={columns} dataSource={data} className='tabledanhsachgoive'/>
+      {/*@ts-ignore*/}
+      <Table columns={columns} dataSource={comboTicketArray?.ketqua?.map((comboticket: any) => ({...comboticket, key: comboticket.id}))} className='tabledanhsachgoive'/>
   
 
     </div>

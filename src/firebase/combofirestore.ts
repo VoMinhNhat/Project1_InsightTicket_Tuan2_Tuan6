@@ -23,18 +23,18 @@ const store = !firebase.apps.length
   ? firebase.initializeApp(firebaseConfig).firestore()
   : firebase.app().firestore();
 
-const taskStore = store.collection('tickets')
+const comboStore = store.collection('combotickets')
 
 // Kết nối đến tickets
-const api = {
+const comboapi = {
   fetchAll: <T>(): Promise<T[] | firebase.firestore.DocumentData[] | undefined> =>  {
-    const data =  taskStore.get().then((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData | T>) => {
+    const data =  comboStore.get().then((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData | T>) => {
       return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data()})) 
     })
     return data
   },
   fetchOne: <T>(id: string): Promise<T | firebase.firestore.DocumentData | undefined> => {
-    const data = taskStore.doc(id).get().then((doc) => {
+    const data = comboStore.doc(id).get().then((doc) => {
       return doc.data()
     })
     console.log("task with id: ", data)
@@ -43,9 +43,6 @@ const api = {
 }
 
 
-console.log(api.fetchAll)
+console.log(comboapi.fetchAll)
 
-export default api;
-
-
-
+export default comboapi;

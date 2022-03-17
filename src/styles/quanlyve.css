@@ -251,7 +251,9 @@
 
 .ant-table-thead > tr > th, .ant-table-tbody > tr > td, .ant-table tfoot > tr > th, .ant-table tfoot > tr > td {
     position: relative;
-    padding: 6px 6px !important;
+    padding-left: 6px !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
     overflow-wrap: break-word;
     font-size: 12px !important;
 }
@@ -275,4 +277,15 @@
     font-weight: 500;
     background: #fff;
     border-color: #FF993C !important;
+}
+
+
+/* Modal cập nhật ngày sử dụng vé */
+
+.btncapnhatngaysudung{
+    background: none !important;
+    border: none !important;
+    color: #000000 !important;
+    height: auto !important;
+    box-shadow: none !important;
 }

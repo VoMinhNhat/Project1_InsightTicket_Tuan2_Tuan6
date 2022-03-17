@@ -5,69 +5,75 @@ import "antd/dist/antd.css";
 
 import { SearchOutlined } from "@ant-design/icons";
 import { Table, Select, Radio, Space, DatePicker, } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import ticketSlice, { getTicket, ticketAsync } from '../../features/counter/ticketFireStore';
+import { useEffect, useState } from 'react';
+
+
 
 
 // Table Đối Soát Vé:
-const columns = [
-    {
-        title: 'STT',
-        dataIndex: 'stt',
-        key: 'stt',
-    },
-    {
-        title: 'Số vé',
-        dataIndex: 'sove',
-        key: 'sove',
-    },
-    {
-        title: 'Tên sự kiện',
-        dataIndex: 'eventname',
-        key: 'eventname',
-    },
-    {
-        title: 'Ngày sử dụng',
-        dataIndex: 'useddate',
-        key: 'useddate',
-    },
-    {
-        title: 'Tên loại vé',
-        dataIndex: 'ticketname',
-        key: 'ticketname',
-    },
-    {
-        title: 'Cổng check-in',
-        dataIndex: 'gatecheck',
-        key: 'gatecheck',
-    },
-    {
-        title: '',
-        dataIndex: 'doisoat',
-        key: 'doisoat',
-    },
-];
+// const columns = [
+//     {
+//         title: 'STT',
+//         dataIndex: 'stt',
+//         key: 'stt',
+//     },
+//     {
+//         title: 'Số vé',
+//         dataIndex: 'sove',
+//         key: 'sove',
+//     },
+//     {
+//         title: 'Tên sự kiện',
+//         dataIndex: 'eventname',
+//         key: 'eventname',
+//     },
+//     {
+//         title: 'Ngày sử dụng',
+//         dataIndex: 'useddate',
+//         key: 'useddate',
+//     },
+//     {
+//         title: 'Tên loại vé',
+//         dataIndex: 'ticketname',
+//         key: 'ticketname',
+//     },
+//     {
+//         title: 'Cổng check-in',
+//         dataIndex: 'gatecheck',
+//         key: 'gatecheck',
+//     },
+//     {
+//         title: '',
+//         dataIndex: 'doisoat',
+//         key: 'doisoat',
+//     },
+// ];
 
-const data = [
-    {
-        key: '1',
-        stt: '1',
-        sove: 123456789034,
-        eventname: 'Hội chợ triển lãm tiêu dùng 2021',
-        useddate: '14/04/2021',
-        ticketname: 'Vé cổng',
-        gatecheck: 'Cổng 1',
-        doisoat: 'Chưa đối soát',
-    },
-    {
-        key: '2',
-        stt: '2',
-        sove: 123456157720,
-        eventname: 'Hội chợ triển lãm tiêu dùng 2021',
-        useddate: '14/04/2021',
-        ticketname: 'Vé cổng',
-        gatecheck: 'Cổng 1',
-        doisoat: 'Chưa đối soát',
-    },
-];
+// const data = [
+//     {
+//         key: '1',
+//         stt: '1',
+//         sove: 123456789034,
+//         eventname: 'Hội chợ triển lãm tiêu dùng 2021',
+//         useddate: '14/04/2021',
+//         ticketname: 'Vé cổng',
+//         gatecheck: 'Cổng 1',
+//         doisoat: 'Chưa đối soát',
+//     },
+//     {
+//         key: '2',
+//         stt: '2',
+//         sove: 123456157720,
+//         eventname: 'Hội chợ triển lãm tiêu dùng 2021',
+//         useddate: '14/04/2021',
+//         ticketname: 'Vé cổng',
+//         gatecheck: 'Cổng 1',
+//         doisoat: 'Chưa đối soát',
+//     },
+// ];
 
 // Option Select cho event:
 const { Option } = Select;
@@ -108,6 +114,69 @@ const dateFormat = 'YYYY/MM/DD';
 
 // Render ra kết quả  
 export const DoiSoatVe = () => {
+  
+    // Kết nối database fire store
+  const dispatch = useDispatch()
+
+  const ticketArray = useSelector((state: RootState ) => state.ticket )
+  
+  useEffect(
+    () => {
+        dispatch(getTicket())
+    }
+  ,[dispatch])
+
+  console.log(ticketArray)
+
+  // table của firesotre
+    const columns = [
+        {
+            title: 'STT',
+            render: (text:any, record:any, index:any) => `${index + 1}`,
+        },
+        {
+            title: 'Số vé',
+            dataIndex: 'ticketnumber',
+            key: 'sove',
+        },
+        {
+            title: 'Tên sự kiện',
+            dataIndex: 'eventname',
+            key: 'eventname',
+        },
+        {
+            title: 'Ngày sử dụng',
+            dataIndex: 'useddate',
+            key: 'useddate',
+        },
+        {
+            title: 'Tên loại vé',
+            dataIndex: 'type',
+            key: 'ticketname',
+        },
+        {
+            title: 'Cổng check-in',
+            dataIndex: 'gate',
+            key: 'gatecheck',
+        },
+        {
+            title: '',
+            dataIndex: 'forcontrol',
+            key: 'doisoat',
+            render: (doisoat: any) => {
+                if (doisoat == true) {
+                    return(
+                        <div style={{fontWeight: '400', fontSize: '14px', color: '#FD5959'}}>Đã đối soát</div>
+                    )
+                } else {
+                    return(
+                        <div style={{fontWeight: '400', fontSize: '14px', color: '#A5A8B1'}}>Chưa đối soát</div>
+                    )
+                }
+            },
+        },
+    ];
+
     return (
         <div className='doisoat'>
 
@@ -122,7 +191,7 @@ export const DoiSoatVe = () => {
 
                 <button className='buttonxuatfiledoisoat'>Xuất file (.csv)</button>
 
-                <Table columns={columns} dataSource={data} className='tabledoisoatve' />
+                <Table columns={columns} dataSource={ticketArray?.value?.map((ticket: any) => ({...ticket, key: ticket.id}))} className='tabledoisoatve' />
 
             </div>
 
