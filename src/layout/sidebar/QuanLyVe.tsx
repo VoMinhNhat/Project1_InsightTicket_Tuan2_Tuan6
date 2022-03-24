@@ -95,7 +95,7 @@ const Modals = () => {
 
   return (
     <>
-      <Button type="primary" onClick={showModal} className='buttonmodal' style={{position: 'absolute', }}>
+      <Button type="primary" onClick={showModal} className='buttonmodal' style={{ position: 'absolute', }}>
         <AiOutlineFilter className='iconfilter' />Lọc Vé
       </Button>
 
@@ -154,33 +154,33 @@ const ModalNewDay = () => {
   return (
     <>
       <Button type="primary" onClick={showModal} className='btncapnhatngaysudung'>
-        <BiDotsVerticalRounded/>
+        <BiDotsVerticalRounded />
       </Button>
       <Modal title="Đổi ngày sử dụng vé" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={null} width={550}>
 
-        <div style={{display: 'flex'}}>
-          <div style={{fontSize:'15px', fontWeight: '500'}}>Số vé</div>
-          <div style={{fontSize:'14px', fontWeight: '400', marginLeft:'100px'}}>PKG20210502</div>
+        <div style={{ display: 'flex' }}>
+          <div style={{ fontSize: '15px', fontWeight: '500' }}>Số vé</div>
+          <div style={{ fontSize: '14px', fontWeight: '400', marginLeft: '100px' }}>PKG20210502</div>
         </div>
 
-        <div style={{display: 'flex', marginTop: '12px'}}>
-          <div style={{fontSize:'15px', fontWeight: '500'}}>Loại vé</div>
-          <div style={{fontSize:'14px', fontWeight: '400', marginLeft:'90px'}}>Vé cổng-Gói sự kiện</div>
-        </div> 
-
-        <div style={{display: 'flex', marginTop: '12px'}}>
-          <div style={{fontSize:'15px', fontWeight: '500'}}>Tên sự kiện</div>
-          <div style={{fontSize:'14px', fontWeight: '400', marginLeft:'63px'}}>Hội chợ triễn lãm tiêu dùng 2021</div>
+        <div style={{ display: 'flex', marginTop: '12px' }}>
+          <div style={{ fontSize: '15px', fontWeight: '500' }}>Loại vé</div>
+          <div style={{ fontSize: '14px', fontWeight: '400', marginLeft: '90px' }}>Vé cổng-Gói sự kiện</div>
         </div>
 
-        <div style={{display: 'flex', marginTop: '12px'}}>
-          <div style={{fontSize:'15px', fontWeight: '500'}}>Hạn sử dụng</div>
-          <Space direction="vertical" size={12} style={{marginLeft: '50px'}}>
-              <DatePicker format={dateFormat} />
-            </Space>,
+        <div style={{ display: 'flex', marginTop: '12px' }}>
+          <div style={{ fontSize: '15px', fontWeight: '500' }}>Tên sự kiện</div>
+          <div style={{ fontSize: '14px', fontWeight: '400', marginLeft: '63px' }}>Hội chợ triễn lãm tiêu dùng 2021</div>
         </div>
 
-        <div style={{textAlign: 'center', marginTop: '20px'}}> {/* Lưu hoặc hủy */}
+        <div style={{ display: 'flex', marginTop: '12px' }}>
+          <div style={{ fontSize: '15px', fontWeight: '500' }}>Hạn sử dụng</div>
+          <Space direction="vertical" size={12} style={{ marginLeft: '50px' }}>
+            <DatePicker format={dateFormat} />
+          </Space>,
+        </div>
+
+        <div style={{ textAlign: 'center', marginTop: '20px' }}> {/* Lưu hoặc hủy */}
           <button className='btnhuycaidatve'>Hủy</button>
           <button className='btnluucaidatve'>Lưu</button>
         </div>
@@ -203,75 +203,77 @@ const Tab = () => {
   // Kết nối với data của table
   const dispatch = useDispatch()
 
-  const ticketArray = useSelector((state: RootState ) => state.ticket )
-  
+  const ticketArray = useSelector((state: RootState) => state.ticket)
+
   useEffect(
     () => {
-        dispatch(getTicket())
+      dispatch(getTicket())
     }
-  ,[dispatch])
+    , [dispatch])
 
   console.log(ticketArray)
 
 
-// Colums của table   
+  // Colums của table   
   const columns = [
     {
       title: 'STT',
-      render: (text:any, record:any, index:any) => `${index + 1}`
+      dataIndex: 'stt',
+      key: 'stt',
+      render: (text: any, record: any, index: any) => `${index + 1}`
     },
     {
       title: 'Booking code',
       dataIndex: 'bookingcode',
       key: 'bookcode',
     },
-  
+
     {
       title: 'Số vé',
       dataIndex: 'ticketnumber',
       key: 'sove',
     },
-  
+
     {
       title: 'Tên sự kiện',
       dataIndex: 'eventname',
       key: 'sukien',
     },
-  
+
     {
       title: 'Tình trạng sử dụng',
       key: 'tags',
       dataIndex: 'status',
       render: (tags: any) => {
         if (tags === 'Hết hạn') {
-        return(
-          <h4 style={{color: '#FD5959', width: '80px', background: '#F8EBE8',paddingLeft: '5px', height: '21px', border: '1px solid #FD5959', borderRadius: '4px'}}>
-            <BsDot/>{tags}
-          </h4>
-        )
-      }
-      else if (tags === 'Đã sử dụng'){
-        return(
-          <h4 style={{color: '#919DBA',width: '100px', background: '#EAF1F8', paddingLeft: '5px', height: '21px', border: '1px solid #919DBA', borderRadius: '4px'}}>
-            <BsDot/>{tags}
-          </h4>
-        )
-      } else {
-        return(
-          <h4 style={{color: '#03AC00',width: '110px', background: '#DEF7E0', paddingLeft: '5px', height: '21px', border: '1px solid #03AC00', borderRadius: '4px'}}>
-            <BsDot/>{tags}
-          </h4>
-        )
-      }
+          return (
+            <h4 style={{ color: '#FD5959', width: '80px', background: '#F8EBE8', paddingLeft: '5px', height: '21px', border: '1px solid #FD5959', borderRadius: '4px' }}>
+              <BsDot />{tags}
+            </h4>
+          )
+        }
+        else if (tags === 'Đã sử dụng') {
+          return (
+            <h4 style={{ color: '#919DBA', width: '100px', background: '#EAF1F8', paddingLeft: '5px', height: '21px', border: '1px solid #919DBA', borderRadius: '4px' }}>
+              <BsDot />{tags}
+            </h4>
+          )
+        } else {
+          return (
+            <h4 style={{ color: '#03AC00', width: '110px', background: '#DEF7E0', paddingLeft: '5px', height: '21px', border: '1px solid #03AC00', borderRadius: '4px' }}>
+              <BsDot />{tags}
+            </h4>
+          )
+        }
       },
     },
     {
       title: 'Ngày sử dụng',
       dataIndex: 'useddate',
       key: 'useddate',
-      render: (useddate:any, record:any) => {
-        if(record.status === 'Đã sử dụng'){
-          return( <> {useddate} </> )
+      render: (useddate: any, record: any) => {
+        if (record.status === 'Đã sử dụng') {
+          return (<> {useddate} </>)
         }
       }
     },
@@ -284,55 +286,55 @@ const Tab = () => {
       title: 'Cổng check-in',
       dataIndex: 'gate',
       key: 'gatecheck',
-      render: (gatecheck:any, record:any) => {
-        if(record.status === 'Đã sử dụng'){ return( <>{gatecheck}</> )} else { return(<>-</>) }
+      render: (gatecheck: any, record: any) => {
+        if (record.status === 'Đã sử dụng') { return (<>{gatecheck}</>) } else { return (<>-</>) }
       }
     },
     {
       title: '',
       key: 'action',
-      render: (text:any, record:any) => {
-        if(record.status === 'Chưa sử dụng'){ return( <ModalNewDay/> )} 
+      render: (text: any, record: any) => {
+        if (record.status === 'Chưa sử dụng') { return (<ModalNewDay />) }
       }
     },
   ];
 
- return (
+  return (
 
-  <Tabs defaultActiveKey="1" onChange={callback}>
+    <Tabs defaultActiveKey="1" onChange={callback}>
 
-    <TabPane tab="Gói Gia Đình" key="1"> {/* Gói gia đình*/}
+      <TabPane tab="Gói Gia Đình" key="1" className='goigiadinh'> {/* Gói gia đình*/}
 
-      <div className='khungtren'> {/* Khung Trên Gói Gia Đình */}
-        <input type='text' className='searcher' /><SearchOutlined className='icongoigiadinh' />
-      </div>
+        <div className='khungtren'> {/* Khung Trên Gói Gia Đình */}
+          <input type='text' className='searcher' /><SearchOutlined className='icongoigiadinh' />
+        </div>
 
-      <div className='modal'> {/* Modal Cho Gói Gia Đình */}
-        <Modals />
-      </div>
+        <div className='modal'> {/* Modal Cho Gói Gia Đình */}
+          <Modals />
+        </div>
 
-      <Button className='xuatfilebutton'>Xuất file (.csv)</Button> {/* Xuất file gói gia đình  */}
+        <Button className='xuatfilebutton'>Xuất file (.csv)</Button> {/* Xuất file gói gia đình  */}
 
-      <Table columns={columns} dataSource={ticketArray?.value?.map((ticket: any) => ({...ticket, key: ticket.id}))} className='tabledanhsachve' />
-    </TabPane>
+        <Table columns={columns} dataSource={ticketArray?.value?.map((ticket: any) => ({ ...ticket, key: ticket.id }))} className='tabledanhsachve' />
+      </TabPane>
 
-    <TabPane tab="Gói sự kiện" key="2"> {/* Gói sự kiện */}
-      <div className='khungtren'> {/* Khung Trên Gói Sự kiện */}
-        <input type='text' className='searcher' /><SearchOutlined className='icongoigiadinh' />
-      </div>
+      <TabPane tab="Gói sự kiện" key="2"> {/* Gói sự kiện */}
+        <div className='khungtren'> {/* Khung Trên Gói Sự kiện */}
+          <input type='text' className='searcher' /><SearchOutlined className='icongoigiadinh' />
+        </div>
 
-      <div className='modal'> {/* Modal Cho Gói Sự kiện */}
-        <Modals />
-      </div>
+        <div className='modal'> {/* Modal Cho Gói Sự kiện */}
+          <Modals />
+        </div>
 
-      <Button className='xuatfilebutton'>Xuất file (.csv)</Button> {/* Xuất file gói sự kiện  */}
+        <Button className='xuatfilebutton'>Xuất file (.csv)</Button> {/* Xuất file gói sự kiện  */}
 
-      <Table columns={columns} dataSource={ticketArray?.value?.map((ticket: any) => ({...ticket, key: ticket.id}))} className='tabledanhsachve' />
-    </TabPane>
+        <Table columns={columns} dataSource={ticketArray?.value?.map((ticket: any) => ({ ...ticket, key: ticket.id }))} className='tabledanhsachve' />
+      </TabPane>
 
-  </Tabs>
- )
- };
+    </Tabs>
+  )
+};
 
 
 // Render ra kết quả

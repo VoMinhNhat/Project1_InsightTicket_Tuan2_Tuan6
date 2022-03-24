@@ -1,4 +1,6 @@
-// Import the functions you need from the SDKs you need
+
+// Kết nối đến collection của Tickets
+
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore"
 import { initializeApp } from "firebase/app";

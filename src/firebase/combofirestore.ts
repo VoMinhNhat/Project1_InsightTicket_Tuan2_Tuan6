@@ -1,4 +1,6 @@
-// Import the functions you need from the SDKs you need
+
+
+// Kết nối đến collection của Combo tickets
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore"
 import { initializeApp } from "firebase/app";
@@ -28,17 +30,17 @@ const comboStore = store.collection('combotickets')
 // Kết nối đến tickets
 const comboapi = {
   fetchAll: <T>(): Promise<T[] | firebase.firestore.DocumentData[] | undefined> =>  {
-    const data =  comboStore.get().then((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData | T>) => {
+    const combodata =  comboStore.get().then((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData | T>) => {
       return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data()})) 
     })
-    return data
+    return combodata
   },
   fetchOne: <T>(id: string): Promise<T | firebase.firestore.DocumentData | undefined> => {
-    const data = comboStore.doc(id).get().then((doc) => {
+    const combodata = comboStore.doc(id).get().then((doc) => {
       return doc.data()
     })
-    console.log("task with id: ", data)
-    return data
+    console.log("task with id: ", combodata)
+    return combodata
   },
 }
 
