@@ -1,7 +1,7 @@
 import { ApiFilled } from '@ant-design/icons';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
-import { fetchCount } from './counterAPI';
+
 import api from '../../firebase/firebase';
 import comboapi from '../../firebase/combofirestore';
 import firebase from "firebase/compat/app";

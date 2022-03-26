@@ -1,5 +1,5 @@
 import React from 'react';
-import { Counter } from './features/counter/Counter';
+
 import { Index } from './layout';
 import { Header } from './layout/header/Header';
 import { LeftMenu } from './layout/leftmenu/LeftMenu';
