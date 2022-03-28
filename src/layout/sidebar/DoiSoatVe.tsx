@@ -9,71 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import ticketSlice, { getTicket, ticketAsync } from '../../features/counter/ticketFireStore';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-
-
-
-// Table Đối Soát Vé:
-// const columns = [
-//     {
-//         title: 'STT',
-//         dataIndex: 'stt',
-//         key: 'stt',
-//     },
-//     {
-//         title: 'Số vé',
-//         dataIndex: 'sove',
-//         key: 'sove',
-//     },
-//     {
-//         title: 'Tên sự kiện',
-//         dataIndex: 'eventname',
-//         key: 'eventname',
-//     },
-//     {
-//         title: 'Ngày sử dụng',
-//         dataIndex: 'useddate',
-//         key: 'useddate',
-//     },
-//     {
-//         title: 'Tên loại vé',
-//         dataIndex: 'ticketname',
-//         key: 'ticketname',
-//     },
-//     {
-//         title: 'Cổng check-in',
-//         dataIndex: 'gatecheck',
-//         key: 'gatecheck',
-//     },
-//     {
-//         title: '',
-//         dataIndex: 'doisoat',
-//         key: 'doisoat',
-//     },
-// ];
-
-// const data = [
-//     {
-//         key: '1',
-//         stt: '1',
-//         sove: 123456789034,
-//         eventname: 'Hội chợ triển lãm tiêu dùng 2021',
-//         useddate: '14/04/2021',
-//         ticketname: 'Vé cổng',
-//         gatecheck: 'Cổng 1',
-//         doisoat: 'Chưa đối soát',
-//     },
-//     {
-//         key: '2',
-//         stt: '2',
-//         sove: 123456157720,
-//         eventname: 'Hội chợ triển lãm tiêu dùng 2021',
-//         useddate: '14/04/2021',
-//         ticketname: 'Vé cổng',
-//         gatecheck: 'Cổng 1',
-//         doisoat: 'Chưa đối soát',
-//     },
-// ];
 
 // Option Select cho event:
 const { Option } = Select;

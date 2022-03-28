@@ -5,7 +5,7 @@
     height: 600px;
 }
 
-.leftmenu li {
+.leftmenu a li {
     display: flex;
     margin-top: 10px;
     margin-left: -20px;
@@ -21,10 +21,16 @@
     transition: 0.1s;
 }
 
-.leftmenu li:hover{
+.leftmenu a li:hover{
     background-color: #FFB800;
     color: white;
 }
+
+.leftmenu a:focus li{
+    background-color: #FFB800;
+    color: white;
+}
+
 
 li .icon {
     margin-right: 5px;

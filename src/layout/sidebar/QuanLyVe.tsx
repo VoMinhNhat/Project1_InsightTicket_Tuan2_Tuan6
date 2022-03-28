@@ -6,7 +6,7 @@ import "antd/dist/antd.css";
 
 import { Tabs, Modal, Button, DatePicker, Space, Radio, Checkbox, Row, Col, Table, Tag, } from 'antd';
 import { SearchOutlined } from "@ant-design/icons";
-import { BsDot } from "react-icons/bs";
+import { GoPrimitiveDot } from "react-icons/go"
 import { AiOutlineFilter } from "react-icons/ai";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
@@ -18,6 +18,7 @@ import ticketSlice, { getTicket, ticketAsync } from '../../features/counter/tick
 // Date picker
 const { RangePicker } = DatePicker;
 const dateFormat = 'YYYY/MM/DD';
+
 
 // Radio cho tình trạng sử dụng
 const Radiostatus = () => {
@@ -37,6 +38,7 @@ const Radiostatus = () => {
     </Radio.Group>
   );
 };
+
 
 // Check box cho cổng checkin
 const CheckboxGroup = Checkbox.Group;
@@ -76,6 +78,7 @@ const CheckboxGateCheck = () => {
     </>
   );
 };
+
 
 // Modal Cho gói gia đình và sự kiện:
 const Modals = () => {
@@ -247,21 +250,21 @@ const Tab = () => {
       render: (tags: any) => {
         if (tags === 'Hết hạn') {
           return (
-            <h4 style={{ color: '#FD5959', width: '80px', background: '#F8EBE8', paddingLeft: '5px', height: '21px', border: '1px solid #FD5959', borderRadius: '4px' }}>
-              <BsDot />{tags}
+            <h4 style={{color: '#FD5959', width: '80px', background: '#F8EBE8', paddingLeft: '5px', height: '21px', border: '1px solid #FD5959', borderRadius: '4px',}}>
+              <GoPrimitiveDot/>{tags}
             </h4>
           )
         }
         else if (tags === 'Đã sử dụng') {
           return (
             <h4 style={{ color: '#919DBA', width: '100px', background: '#EAF1F8', paddingLeft: '5px', height: '21px', border: '1px solid #919DBA', borderRadius: '4px' }}>
-              <BsDot />{tags}
+              <GoPrimitiveDot />{tags}
             </h4>
           )
         } else {
           return (
             <h4 style={{ color: '#03AC00', width: '110px', background: '#DEF7E0', paddingLeft: '5px', height: '21px', border: '1px solid #03AC00', borderRadius: '4px' }}>
-              <BsDot />{tags}
+              <GoPrimitiveDot />{tags}
             </h4>
           )
         }
@@ -303,13 +306,19 @@ const Tab = () => {
 
     <Tabs defaultActiveKey="1" onChange={callback}>
 
-      <TabPane tab="Gói Gia Đình" key="1" className='goigiadinh'> {/* Gói gia đình*/}
+      {/* Gói gia đình*/}
 
-        <div className='khungtren'> {/* Khung Trên Gói Gia Đình */}
+      <TabPane tab="Gói Gia Đình" key="1" className='goigiadinh'> 
+
+      {/* Khung Trên Gói Gia Đình */}
+
+        <div className='khungtren'> 
           <input type='text' className='searcher' /><SearchOutlined className='icongoigiadinh' />
         </div>
 
-        <div className='modal'> {/* Modal Cho Gói Gia Đình */}
+      {/* Modal Cho Gói Gia Đình */}
+
+        <div className='modal'> 
           <Modals />
         </div>
 
@@ -319,6 +328,7 @@ const Tab = () => {
       </TabPane>
 
       <TabPane tab="Gói sự kiện" key="2"> {/* Gói sự kiện */}
+
         <div className='khungtren'> {/* Khung Trên Gói Sự kiện */}
           <input type='text' className='searcher' /><SearchOutlined className='icongoigiadinh' />
         </div>
@@ -343,21 +353,8 @@ export const QuanLyVe = () => {
 
   return (
     <div className="quanlyve">
-
-      {/* {
-         //@ts-ignore
-        ticketArray.ketqua?.map(
-          //@ts-ignore
-          (takeTicketData) =>(
-            //@ts-ignore
-             <h4 key={takeTicketData.id}>{takeTicketData.bookingcode}</h4> 
-           ) 
-          )
-      }  */}
-
       <div className='tieudedanhsachve'>Danh Sách Vé</div>
       <div className='tabs'><Tab /></div>
-
     </div>
   )
 }
